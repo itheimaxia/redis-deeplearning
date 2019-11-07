@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-@Service
+//@Service
 public class RedisLockTask {
 
     private static String REDIS_LOCK_KEY = "lock:key:1";
