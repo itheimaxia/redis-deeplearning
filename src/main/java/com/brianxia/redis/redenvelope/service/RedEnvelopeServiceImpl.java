@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -50,7 +51,7 @@ public class RedEnvelopeServiceImpl implements RedEnvelopeService{
         if(aBoolean){
             //成功获得锁
             System.out.println(port+"获得了锁");
-
+            Date start = new Date();
             try{
                 //获取红包
                 String countkey = REDIS_RE_COUNT + id;
@@ -69,7 +70,9 @@ public class RedEnvelopeServiceImpl implements RedEnvelopeService{
                 String lockport = redisTemplate.opsForValue().get(lockkey);
                 if(port.equals(lockport)){
                     redisTemplate.delete(lockkey);
-                    System.out.println(port+"释放了锁");
+                    Date end = new Date();
+                    System.out.println(port+"释放了锁，本次锁持有时间:"
+                            + (end.getTime()-start.getTime()) + "ms");
                 }else{
                     System.out.println(port+"这把锁不是我的，我不会去释放它");
                 }
